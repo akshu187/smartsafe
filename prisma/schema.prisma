@@ -1,0 +1,114 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  name         String?
+  email        String   @unique
+  passwordHash String   @default("")
+  role         String   @default("driver")
+  createdAt    DateTime @default(now())
+  lastLoginAt  DateTime?
+  trips        Trip[]
+  emergencyContacts EmergencyContact[]
+  medicalInfo  MedicalInfo?
+}
+
+model AccidentZone {
+  id            Int      @id @default(autoincrement())
+  zoneId        String   @unique
+  name          String
+  lat           Float
+  lng           Float
+  radiusMeters  Int
+  severity      String   // LOW, MEDIUM, HIGH
+  message       String
+  city          String?
+  state         String?
+  country       String   @default("India")
+  isActive      Boolean  @default(true)
+  reportCount   Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Trip {
+  id                    Int      @id @default(autoincrement())
+  userId                Int
+  startTime             DateTime
+  endTime               DateTime?
+  startLat              Float
+  startLng              Float
+  endLat                Float?
+  endLng                Float?
+  distance              Float    @default(0)
+  duration              Int      @default(0)
+  avgSpeed              Float    @default(0)
+  maxSpeed              Float    @default(0)
+  safetyScore           Int      @default(100)
+  harshBrakeCount       Int      @default(0)
+  harshAccelCount       Int      @default(0)
+  speedingCount         Int      @default(0)
+  riskZonesEncountered  Int      @default(0)
+  weatherCondition      String?
+  isActive              Boolean  @default(true)
+  user                  User     @relation(fields: [userId], references: [id])
+  events                TripEvent[]
+  trackPoints           TrackPoint[]
+  createdAt             DateTime @default(now())
+}
+
+model TripEvent {
+  id        Int      @id @default(autoincrement())
+  tripId    Int
+  timestamp DateTime
+  eventType String   // 'harsh_brake', 'harsh_accel', 'speeding', 'zone_entry', 'crash_detected'
+  lat       Float
+  lng       Float
+  severity  String   // 'LOW', 'MEDIUM', 'HIGH'
+  details   String?
+  speed     Float?
+  trip      Trip     @relation(fields: [tripId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model TrackPoint {
+  id        Int      @id @default(autoincrement())
+  tripId    Int
+  timestamp DateTime
+  lat       Float
+  lng       Float
+  speed     Float
+  accuracy  Float
+  trip      Trip     @relation(fields: [tripId], references: [id])
+}
+
+model EmergencyContact {
+  id           Int    @id @default(autoincrement())
+  userId       Int
+  name         String
+  phone        String
+  relationship String
+  priority     Int    @default(1)
+  user         User   @relation(fields: [userId], references: [id])
+}
+
+model MedicalInfo {
+  id              Int     @id @default(autoincrement())
+  userId          Int     @unique
+  bloodGroup      String?
+  allergies       String?
+  medications     String?
+  conditions      String?
+  emergencyNotes  String?
+  user            User    @relation(fields: [userId], references: [id])
+}

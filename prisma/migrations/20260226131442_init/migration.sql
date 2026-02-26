@@ -1,0 +1,13 @@
+-- CreateTable
+CREATE TABLE "User" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" TEXT,
+    "email" TEXT NOT NULL,
+    "passwordHash" TEXT NOT NULL DEFAULT '',
+    "role" TEXT NOT NULL DEFAULT 'driver',
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "lastLoginAt" DATETIME
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");

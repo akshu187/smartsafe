@@ -1,0 +1,26 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+@layer base {
+  :root {
+    color-scheme: light dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-50;
+  }
+
+  @keyframes shrink {
+    from {
+      transform: scaleX(1);
+    }
+    to {
+      transform: scaleX(0);
+    }
+  }
+}
+

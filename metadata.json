@@ -1,0 +1,7 @@
+{
+  "name": "Smart Accident Safety",
+  "description": "A smart road safety system and emergency mobility app.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
