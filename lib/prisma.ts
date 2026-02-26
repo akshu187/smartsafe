@@ -8,13 +8,21 @@ declare global {
 }
 
 // For production (Vercel with PostgreSQL)
-const connectionString = process.env.DATABASE_URL
+let connectionString = process.env.DATABASE_URL
 
 if (!connectionString) {
   throw new Error("DATABASE_URL environment variable is required")
 }
 
-const pool = new Pool({ connectionString })
+// Add pgbouncer parameter for Vercel connection pooling if not present
+if (!connectionString.includes('pgbouncer=true')) {
+  connectionString += connectionString.includes('?') ? '&pgbouncer=true' : '?pgbouncer=true'
+}
+
+const pool = new Pool({ 
+  connectionString,
+  max: 1, // Limit connections for serverless
+})
 const adapter = new PrismaPg(pool)
 
 export const prisma =
