@@ -43,6 +43,8 @@ export default function LoginPage() {
           if (user.name) {
             window.localStorage.setItem("smartsafe_user_name", user.name)
           }
+          // Trigger custom event to update Header
+          window.dispatchEvent(new Event("smartsafe-auth-change"))
         } catch {
           // ignore storage errors
         }
@@ -57,6 +59,8 @@ export default function LoginPage() {
           if (name) {
             window.localStorage.setItem("smartsafe_user_name", name)
           }
+          // Trigger custom event to update Header
+          window.dispatchEvent(new Event("smartsafe-auth-change"))
           router.push("/dashboard")
         } catch {
           const msg = err instanceof Error ? err.message : "Login failed"

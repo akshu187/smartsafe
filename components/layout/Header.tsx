@@ -13,11 +13,27 @@ export function Header() {
   const router = useRouter()
 
   React.useEffect(() => {
-    if (typeof window !== "undefined") {
-      const loggedIn = window.localStorage.getItem("smartsafe_logged_in") === "1"
-      const name = window.localStorage.getItem("smartsafe_user_name")
-      setIsLoggedIn(loggedIn)
-      setUserName(name)
+    const checkAuth = () => {
+      if (typeof window !== "undefined") {
+        const loggedIn = window.localStorage.getItem("smartsafe_logged_in") === "1"
+        const name = window.localStorage.getItem("smartsafe_user_name")
+        setIsLoggedIn(loggedIn)
+        setUserName(name)
+      }
+    }
+
+    // Check on mount
+    checkAuth()
+
+    // Listen for storage changes (from other tabs or same page)
+    window.addEventListener("storage", checkAuth)
+    
+    // Listen for custom event (from same page login)
+    window.addEventListener("smartsafe-auth-change", checkAuth)
+
+    return () => {
+      window.removeEventListener("storage", checkAuth)
+      window.removeEventListener("smartsafe-auth-change", checkAuth)
     }
   }, [])
 
