@@ -1,6 +1,3 @@
-// @ts-nocheck
-import "dotenv/config"
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3"
 import { PrismaClient } from "../generated/prisma/client"
 
 declare global {
@@ -8,13 +5,13 @@ declare global {
   var prisma: PrismaClient | undefined
 }
 
-const connectionString = process.env.DATABASE_URL || "file:./dev.db"
-
-const adapter = new PrismaBetterSqlite3({ url: connectionString })
-
+// For production (Vercel), DATABASE_URL will be PostgreSQL from Neon
+// Prisma v7 handles connection automatically via prisma.config.ts
 export const prisma =
   global.prisma ??
-  new PrismaClient({ adapter })
+  new PrismaClient({
+    log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
+  })
 
 if (process.env.NODE_ENV !== "production") {
   global.prisma = prisma

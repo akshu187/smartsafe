@@ -1,15 +1,22 @@
 {
   "app\\dashboard\\page.tsx -> @/components/dashboard/LiveMap": {
-    "id": "app\\dashboard\\page.tsx -> @/components/dashboard/LiveMap",
+    "id": 7335,
     "files": [
-      "static/css/_app-pages-browser_components_dashboard_LiveMap_tsx.css",
-      "static/chunks/_app-pages-browser_components_dashboard_LiveMap_tsx.js"
+      "static/css/55693049b062c6a3.css",
+      "static/chunks/vendor-2c3399fcde2f4898.js",
+      "static/chunks/335.0bbcf7d49790a71c.js"
     ]
   },
-  "node_modules\\next\\dist\\client\\dev\\hot-reloader\\app\\use-websocket.js -> @vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts": {
-    "id": "node_modules\\next\\dist\\client\\dev\\hot-reloader\\app\\use-websocket.js -> @vercel/turbopack-ecmascript-runtime/browser/dev/hmr-client/hmr-client.ts",
+  "node_modules\\next\\dist\\client\\index.js -> ../pages/_app": {
+    "id": 5139,
     "files": [
-      "static/chunks/_app-pages-browser_node_modules_next_dist_client_dev_noop-turbopack-hmr_js.js"
+      "static/chunks/vendor-2c3399fcde2f4898.js"
+    ]
+  },
+  "node_modules\\next\\dist\\client\\index.js -> ../pages/_error": {
+    "id": 1646,
+    "files": [
+      "static/chunks/vendor-2c3399fcde2f4898.js"
     ]
   }
 }
