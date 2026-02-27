@@ -158,7 +158,7 @@ export function TripHistory() {
             </div>
 
             {/* Trip Stats */}
-            <div className="grid grid-cols-4 gap-2 mb-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
               <div className="text-center p-2 rounded-lg bg-slate-900/50">
                 <div className="text-xs text-slate-400">Max Speed</div>
                 <div className="text-sm font-semibold text-white">
