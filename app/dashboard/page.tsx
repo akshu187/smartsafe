@@ -27,6 +27,7 @@ import { TripControls } from "@/components/dashboard/TripControls"
 import { FatigueAlertModal } from "@/components/dashboard/FatigueAlertModal"
 import { POIAlertModal } from "@/components/dashboard/POIAlertModal"
 import { EnableAllFeaturesButton } from "@/components/dashboard/EnableAllFeaturesButton"
+import { TripHistory } from "@/components/dashboard/TripHistory"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useCrashDetection } from "@/hooks/use-crash-detection"
 import { useHarshDriving } from "@/hooks/use-harsh-driving"
@@ -864,6 +865,7 @@ export default function DashboardPage() {
 
           <div className="space-y-4">
             <SafetyTips />
+            <TripHistory />
             <AlertLogs />
           </div>
         </div>
