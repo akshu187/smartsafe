@@ -10,9 +10,11 @@ export function Header() {
   const [open, setOpen] = React.useState(false)
   const [isLoggedIn, setIsLoggedIn] = React.useState(false)
   const [userName, setUserName] = React.useState<string | null>(null)
+  const [mounted, setMounted] = React.useState(false)
   const router = useRouter()
 
   React.useEffect(() => {
+    setMounted(true)
     const checkAuth = () => {
       if (typeof window !== "undefined") {
         const loggedIn = window.localStorage.getItem("smartsafe_logged_in") === "1"
@@ -78,7 +80,13 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
-          {isLoggedIn ? (
+          {!mounted ? (
+            // Show loading state during hydration to prevent mismatch
+            <div className="hidden md:flex items-center gap-3">
+              <div className="h-10 w-24 animate-pulse rounded-full bg-slate-200 dark:bg-slate-800" />
+              <div className="h-10 w-32 animate-pulse rounded-full bg-slate-200 dark:bg-slate-800" />
+            </div>
+          ) : isLoggedIn ? (
             <>
               <div className="hidden items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm dark:border-slate-700 dark:bg-slate-800 md:flex">
                 <User className="h-4 w-4 text-emerald-500" />
@@ -143,7 +151,13 @@ export function Header() {
               Contact
             </Link>
             <div className="mt-2 flex flex-col gap-2">
-              {isLoggedIn ? (
+              {!mounted ? (
+                // Loading state for mobile menu
+                <div className="space-y-2">
+                  <div className="h-10 w-full animate-pulse rounded-full bg-slate-200 dark:bg-slate-800" />
+                  <div className="h-10 w-full animate-pulse rounded-full bg-slate-200 dark:bg-slate-800" />
+                </div>
+              ) : isLoggedIn ? (
                 <>
                   <div className="flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm dark:border-slate-700 dark:bg-slate-800">
                     <User className="h-4 w-4 text-emerald-500" />

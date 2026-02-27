@@ -21,8 +21,10 @@ export function EnableAllFeaturesButton({ onAllEnabled }: EnableAllFeaturesButto
     notification: false,
   })
   const [showCard, setShowCard] = React.useState(true)
+  const [mounted, setMounted] = React.useState(false)
 
   React.useEffect(() => {
+    setMounted(true)
     // Check if already enabled
     if (typeof window !== "undefined") {
       const alreadyEnabled = localStorage.getItem("smartsafe_all_features_enabled")
@@ -97,7 +99,7 @@ export function EnableAllFeaturesButton({ onAllEnabled }: EnableAllFeaturesButto
     }
   }
 
-  if (!showCard) return null
+  if (!mounted || !showCard) return null
 
   const allEnabled = status.gps && status.motion && status.notification
 

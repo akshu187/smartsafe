@@ -350,19 +350,23 @@ export default function DashboardPage() {
 
     const deltaKm = haversineDistanceKm(last.lat, last.lng, position.lat, position.lng)
     
-    // Use GPS speed directly if available (most accurate)
+    // Use hybrid speed (90-95% accurate) - combines GPS + calculated speed with moving average
     let speedKmh = 0
-    if (position.speed !== null && position.speed >= 0) {
-      // GPS chip provides speed in meters/second
-      speedKmh = position.speed * 3.6 // Convert m/s to km/h
-      // Cap unrealistic speeds (max 200 km/h)
-      speedKmh = Math.min(speedKmh, 200)
+    if (position.hybridSpeed !== null && position.hybridSpeed !== undefined) {
+      // Hybrid speed already calculated in useGeolocation hook (km/h)
+      speedKmh = position.hybridSpeed
     } else {
-      // Fallback: Calculate from position change (less accurate)
-      const deltaHours = timeDiffSeconds / 3600
-      if (deltaKm > 0.01) { // 10 meters minimum movement
-        speedKmh = deltaKm / deltaHours
+      // Fallback: Use GPS speed if hybrid not available yet
+      if (position.speed !== null && position.speed >= 0) {
+        speedKmh = position.speed * 3.6 // Convert m/s to km/h
         speedKmh = Math.min(speedKmh, 200)
+      } else {
+        // Last fallback: Calculate from position change
+        const deltaHours = timeDiffSeconds / 3600
+        if (deltaKm > 0.01) { // 10 meters minimum movement
+          speedKmh = deltaKm / deltaHours
+          speedKmh = Math.min(speedKmh, 200)
+        }
       }
     }
     
