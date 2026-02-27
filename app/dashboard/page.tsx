@@ -838,7 +838,6 @@ export default function DashboardPage() {
                   currentZoneId={currentZoneId}
                 />
               */}
-              </div>
 
               {/* Current zone info */}
               {activeZone && (
