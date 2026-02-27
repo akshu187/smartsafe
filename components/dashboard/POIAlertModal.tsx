@@ -22,18 +22,17 @@ export function POIAlertModal({
   speedLimit,
   onDismiss,
 }: POIAlertModalProps) {
-  React.useEffect(() => {
-    if (isOpen) {
-      // Auto-dismiss after 8 seconds
-      const timer = setTimeout(() => {
-        onDismiss()
-      }, 8000)
-
-      return () => clearTimeout(timer)
-    }
-  }, [isOpen, onDismiss])
-
+  // ✅ CRITICAL: Early return MUST come BEFORE any hooks
   if (!isOpen) return null
+
+  React.useEffect(() => {
+    // Auto-dismiss after 8 seconds
+    const timer = setTimeout(() => {
+      onDismiss()
+    }, 8000)
+
+    return () => clearTimeout(timer)
+  }, [onDismiss])
 
   const getIcon = () => {
     switch (type) {
