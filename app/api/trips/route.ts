@@ -19,11 +19,31 @@ export async function GET(request: Request) {
       return NextResponse.json({ trips: [] })
     }
 
-    // Fetch user's trips with events
+    // Fetch user's trips with events (optimized - only necessary fields)
     const trips = await prisma.trip.findMany({
       where: { userId: user.id },
-      include: {
+      select: {
+        id: true,
+        startTime: true,
+        endTime: true,
+        distance: true,
+        duration: true,
+        avgSpeed: true,
+        maxSpeed: true,
+        safetyScore: true,
+        harshBrakeCount: true,
+        harshAccelCount: true,
+        speedingCount: true,
+        riskZonesEncountered: true,
+        weatherCondition: true,
+        isActive: true,
         events: {
+          select: {
+            eventType: true,
+            timestamp: true,
+            severity: true,
+            details: true,
+          },
           orderBy: { timestamp: "desc" },
           take: 5, // Last 5 events per trip
         },
@@ -55,7 +75,12 @@ export async function GET(request: Request) {
       })),
     }))
 
-    return NextResponse.json({ trips: formattedTrips })
+    const response = NextResponse.json({ trips: formattedTrips })
+    
+    // Cache for 30 seconds (trips update frequently during active trip)
+    response.headers.set('Cache-Control', 'public, s-maxage=30, stale-while-revalidate=60')
+    
+    return response
   } catch (error) {
     console.error("Error fetching trips:", error)
     return NextResponse.json({ error: "Failed to fetch trips" }, { status: 500 })

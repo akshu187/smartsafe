@@ -242,9 +242,19 @@ export default function DashboardPage() {
     startGps()
   }, [startGps])
 
-  // Fetch nearby zones when position changes
+  // Fetch nearby zones when position changes (debounced to avoid excessive API calls)
   React.useEffect(() => {
     if (!position) return
+
+    // Debounce zone fetching - only fetch if position changed significantly (>100m)
+    const lastFetchKey = `${Math.floor(position.lat * 1000)}:${Math.floor(position.lng * 1000)}`
+    const prevFetchKey = React.useRef<string>("")
+
+    if (prevFetchKey.current === lastFetchKey) {
+      return // Skip if position hasn't changed significantly
+    }
+
+    prevFetchKey.current = lastFetchKey
 
     const fetchNearbyZones = async () => {
       try {
