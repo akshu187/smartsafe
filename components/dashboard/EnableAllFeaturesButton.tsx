@@ -10,6 +10,21 @@ interface EnableAllFeaturesButtonProps {
 }
 
 export function EnableAllFeaturesButton({ onAllEnabled }: EnableAllFeaturesButtonProps) {
+  const [showCard, setShowCard] = React.useState(true)
+
+  // ✅ CRITICAL: Early return MUST come BEFORE any other hooks
+  if (!showCard) return null
+
+  return <EnableAllFeaturesButtonInner onAllEnabled={onAllEnabled} setShowCard={setShowCard} />
+}
+
+function EnableAllFeaturesButtonInner({ 
+  onAllEnabled, 
+  setShowCard 
+}: { 
+  onAllEnabled: () => void
+  setShowCard: (show: boolean) => void
+}) {
   const [isEnabling, setIsEnabling] = React.useState(false)
   const [status, setStatus] = React.useState<{
     gps: boolean
@@ -20,7 +35,6 @@ export function EnableAllFeaturesButton({ onAllEnabled }: EnableAllFeaturesButto
     motion: false,
     notification: false,
   })
-  const [showCard, setShowCard] = React.useState(true)
 
   React.useEffect(() => {
     // Check if already enabled
@@ -96,8 +110,6 @@ export function EnableAllFeaturesButton({ onAllEnabled }: EnableAllFeaturesButto
       setIsEnabling(false)
     }
   }
-
-  if (!showCard) return null
 
   const allEnabled = status.gps && status.motion && status.notification
 
