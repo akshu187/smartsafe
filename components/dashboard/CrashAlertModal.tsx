@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { AlertTriangle, Phone, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
