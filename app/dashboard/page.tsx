@@ -28,6 +28,7 @@ import { FatigueAlertModal } from "@/components/dashboard/FatigueAlertModal"
 import { POIAlertModal } from "@/components/dashboard/POIAlertModal"
 import { EnableAllFeaturesButton } from "@/components/dashboard/EnableAllFeaturesButton"
 import { TripHistory } from "@/components/dashboard/TripHistory"
+import { SpeedLimitWarning } from "@/components/dashboard/SpeedLimitWarning"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useCrashDetection } from "@/hooks/use-crash-detection"
 import { useHarshDriving } from "@/hooks/use-harsh-driving"
@@ -105,6 +106,11 @@ export default function DashboardPage() {
   const [currentZoneId, setCurrentZoneId] = React.useState<string | null>(null)
   const [nearbyZones, setNearbyZones] = React.useState<any[]>([])
   const [zonesLoading, setZonesLoading] = React.useState(false)
+  const [speedLimitWarning, setSpeedLimitWarning] = React.useState<{
+    show: boolean
+    zoneName: string
+    speedLimit: number
+  }>({ show: false, zoneName: "", speedLimit: 0 })
   const [crashAlertOpen, setCrashAlertOpen] = React.useState(false)
   const [crashCountdown, setCrashCountdown] = React.useState(100)
   const [crashType, setCrashType] = React.useState<"frontal" | "side" | "rear" | "rollover" | "unknown">("unknown")
@@ -273,6 +279,34 @@ export default function DashboardPage() {
 
     fetchNearbyZones()
   }, [position?.lat, position?.lng])
+
+  // Check speed limit violations
+  React.useEffect(() => {
+    if (!position || !nearbyZones.length || !metrics.speed) {
+      setSpeedLimitWarning({ show: false, zoneName: "", speedLimit: 0 })
+      return
+    }
+
+    // Find closest zone within 200m
+    const closeZone = nearbyZones.find((zone) => zone.distance < 0.2) // 200m = 0.2km
+
+    if (closeZone) {
+      // Check if zone has speed limit (we'll use 40 km/h as default for accident zones)
+      const zoneSpeedLimit = 40 // Default speed limit for accident zones
+      
+      if (metrics.speed > zoneSpeedLimit) {
+        setSpeedLimitWarning({
+          show: true,
+          zoneName: closeZone.name,
+          speedLimit: zoneSpeedLimit,
+        })
+      } else {
+        setSpeedLimitWarning({ show: false, zoneName: "", speedLimit: 0 })
+      }
+    } else {
+      setSpeedLimitWarning({ show: false, zoneName: "", speedLimit: 0 })
+    }
+  }, [position, nearbyZones, metrics.speed])
 
   React.useEffect(() => {
     if (typeof window === "undefined") return
@@ -559,6 +593,12 @@ export default function DashboardPage() {
 
   return (
     <>
+      <SpeedLimitWarning
+        currentSpeed={metrics.speed}
+        speedLimit={speedLimitWarning.speedLimit}
+        zoneName={speedLimitWarning.zoneName}
+        isVisible={speedLimitWarning.show}
+      />
       <CrashAlertModal
         isOpen={crashAlertOpen}
         onCancel={cancelCrashAlert}
