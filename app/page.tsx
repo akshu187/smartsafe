@@ -87,34 +87,71 @@ export default function LandingPage() {
               <p className="text-slate-600 dark:text-slate-400">Our system integrates multiple data points to provide unparalleled protection on the road.</p>
             </div>
             
-            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
               {[
+                {
+                  icon: AlertTriangle,
+                  title: "Advanced Crash Detection",
+                  desc: "95-98% accuracy with 8-method detection system including accelerometer, gyroscope, and sound analysis. 100-second countdown for emergency response.",
+                  color: "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400"
+                },
+                {
+                  icon: MapPin,
+                  title: "Accident Zone Alerts",
+                  desc: "Real-time alerts when approaching high-risk areas. Automatic detection of nearby accident-prone zones with severity levels and safety tips.",
+                  color: "bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400"
+                },
                 {
                   icon: CloudRain,
                   title: "Weather & Risk Analysis",
-                  desc: "Real-time monitoring of visibility, rain, and road conditions to predict potential hazards before you reach them.",
+                  desc: "Live weather monitoring with visibility tracking. Dynamic risk calculation based on conditions, speed, and location.",
                   color: "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400"
                 },
                 {
                   icon: BellRing,
-                  title: "3-Phase Alert System",
-                  desc: "Progressive warnings from early precaution tips to critical danger alerts with audio-visual feedback.",
+                  title: "Harsh Driving Detection",
+                  desc: "Real-time monitoring of harsh braking, rapid acceleration, and speeding. Instant feedback to improve driving behavior.",
                   color: "bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400"
                 },
                 {
                   icon: Phone,
                   title: "Automated SOS Dispatch",
-                  desc: "Instant emergency alerts sent to nearby hospitals, police, and fire brigades with exact GPS coordinates.",
+                  desc: "Instant emergency alerts to contacts with GPS location. Manual SOS button for immediate help. Crash-triggered automatic dispatch.",
                   color: "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400"
+                },
+                {
+                  icon: CheckCircle2,
+                  title: "Fatigue Detection",
+                  desc: "Monitors driving duration and patterns. Alerts when rest is needed. Prevents drowsy driving accidents.",
+                  color: "bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400"
+                },
+                {
+                  icon: MapPin,
+                  title: "Live GPS Tracking",
+                  desc: "Real-time location tracking with interactive map. Route history and trip analytics. Nearby zones visualization.",
+                  color: "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400"
+                },
+                {
+                  icon: CheckCircle2,
+                  title: "Safety Score & Analytics",
+                  desc: "Comprehensive driving behavior analysis. Trip metrics including speed, distance, and safety events. Performance insights.",
+                  color: "bg-teal-100 text-teal-600 dark:bg-teal-900/30 dark:text-teal-400"
                 }
               ].map((feature, i) => (
-                <div key={i} className="bg-slate-50 dark:bg-slate-950 rounded-3xl p-8 border border-slate-100 dark:border-slate-800 hover:shadow-xl transition-shadow">
-                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 ${feature.color}`}>
-                    <feature.icon className="w-7 h-7" />
+                <motion.div 
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  viewport={{ once: true }}
+                  className="bg-slate-50 dark:bg-slate-950 rounded-2xl p-6 border border-slate-100 dark:border-slate-800 hover:shadow-xl transition-all hover:-translate-y-1"
+                >
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${feature.color}`}>
+                    <feature.icon className="w-6 h-6" />
                   </div>
-                  <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
-                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{feature.desc}</p>
-                </div>
+                  <h3 className="text-lg font-bold mb-2">{feature.title}</h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{feature.desc}</p>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -131,17 +168,28 @@ export default function LandingPage() {
                 </h2>
                 <div className="space-y-6">
                   {[
-                    "Continuous GPS tracking and route analysis",
-                    "Integration with local emergency services (NHAI)",
-                    "Voice-activated controls for hands-free operation",
-                    "Historical accident zone mapping"
+                    "95-98% accurate crash detection with 8-method system",
+                    "Real-time accident zone alerts within 50km radius",
+                    "Fatigue detection with smart rest recommendations",
+                    "Harsh driving monitoring (braking, acceleration, speeding)",
+                    "Live weather integration with risk calculation",
+                    "Automated SOS dispatch to emergency contacts",
+                    "Trip analytics with safety score tracking",
+                    "Voice-activated controls for hands-free operation"
                   ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3">
+                    <motion.div 
+                      key={i}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: i * 0.1 }}
+                      viewport={{ once: true }}
+                      className="flex items-start gap-3"
+                    >
                       <div className="mt-1 bg-emerald-100 dark:bg-emerald-900/50 rounded-full p-1">
                         <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                       </div>
                       <p className="text-lg text-slate-700 dark:text-slate-300">{item}</p>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
                 <Link href="/dashboard" className="inline-block mt-4">
