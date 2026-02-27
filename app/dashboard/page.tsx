@@ -26,6 +26,7 @@ import { HarshDrivingStats } from "@/components/dashboard/HarshDrivingStats"
 import { TripControls } from "@/components/dashboard/TripControls"
 import { FatigueAlertModal } from "@/components/dashboard/FatigueAlertModal"
 import { POIAlertModal } from "@/components/dashboard/POIAlertModal"
+import { EnableAllFeaturesButton } from "@/components/dashboard/EnableAllFeaturesButton"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useCrashDetection } from "@/hooks/use-crash-detection"
 import { useHarshDriving } from "@/hooks/use-harsh-driving"
@@ -573,6 +574,9 @@ export default function DashboardPage() {
       />
       <div className="bg-slate-950/95">
       <div className="container mx-auto px-4 py-8 space-y-6">
+        {/* Enable All Features Button */}
+        <EnableAllFeaturesButton onAllEnabled={() => console.log("All features enabled!")} />
+        
         {/* Header */}
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
