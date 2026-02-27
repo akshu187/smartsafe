@@ -37,10 +37,13 @@ import { usePOIDetection } from "@/hooks/use-poi-detection"
 import { useActivityLog } from "@/hooks/use-activity-log"
 import { triggerSOS, sendSOSToContacts } from "@/lib/sos-handler"
 
+// Temporarily disabled for debugging
+/*
 const LiveMap = dynamic(
   () => import("@/components/dashboard/LiveMap").then((mod) => ({ default: mod.LiveMap })),
   { ssr: false, loading: () => <div className="h-full w-full flex items-center justify-center bg-slate-900 rounded-2xl"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div></div> }
 )
+*/
 import { useGeolocation } from "@/hooks/use-geolocation"
 import { haversineDistanceKm } from "@/data/accident-zones"
 
@@ -822,12 +825,19 @@ export default function DashboardPage() {
               )}
             </CardHeader>
             <CardContent>
-              <div className="h-96">
+              <div className="h-96 flex items-center justify-center bg-slate-900 rounded-2xl">
+                <div className="text-center text-slate-400">
+                  <p className="text-lg mb-2">🗺️ Map Temporarily Disabled</p>
+                  <p className="text-sm">Testing without Leaflet</p>
+                </div>
+              </div>
+              {/* Temporarily disabled for debugging
                 <LiveMap
                   userPosition={position}
                   zones={nearbyZones}
                   currentZoneId={currentZoneId}
                 />
+              */}
               </div>
 
               {/* Current zone info */}
