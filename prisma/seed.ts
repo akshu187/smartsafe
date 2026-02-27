@@ -1,11 +1,16 @@
 import { PrismaClient } from "../generated/prisma/client"
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3"
-import Database from "better-sqlite3"
+import { Pool } from "pg"
+import { PrismaPg } from "@prisma/adapter-pg"
 import "dotenv/config"
 
-const connectionString = process.env.DATABASE_URL || "file:./dev.db"
-const db = new Database(connectionString.replace("file:", ""))
-const adapter = new PrismaBetterSqlite3({ url: connectionString })
+const connectionString = process.env.DATABASE_URL
+
+if (!connectionString) {
+  throw new Error("DATABASE_URL environment variable is required")
+}
+
+const pool = new Pool({ connectionString })
+const adapter = new PrismaPg(pool)
 const prisma = new PrismaClient({ adapter })
 
 const zones = [
