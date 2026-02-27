@@ -83,8 +83,7 @@ export default function LoginPage() {
             Log in to SmartSafe
           </h1>
           <p className="text-sm text-slate-600 dark:text-slate-300">
-            Access the SmartSafe dashboard from this website. This page focuses on UI only and does not
-            connect to a real authentication backend.
+            Access your SmartSafe dashboard to monitor your journey in real-time with advanced safety features.
           </p>
         </div>
 

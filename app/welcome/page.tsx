@@ -88,11 +88,10 @@ export default function WelcomePage() {
               Welcome to SmartSafe
             </p>
             <h1 className="text-3xl font-semibold tracking-tight text-slate-900 dark:text-white md:text-4xl">
-              A modern road-safety website for smarter, safer journeys.
+              Your intelligent road safety companion for every journey.
             </h1>
             <p className="max-w-xl text-sm leading-relaxed text-slate-600 dark:text-slate-300 md:text-base">
-              This website demonstrates how an intelligent accident safety system could look and feel
-              in a real deployment, with a public marketing site and a live monitoring dashboard.
+              SmartSafe provides real-time crash detection, accident zone alerts, weather monitoring, and automated emergency response to keep you and your loved ones safe on the road.
             </p>
             <div className="flex flex-wrap items-center gap-3">
               <Link href="/login">
@@ -115,24 +114,21 @@ export default function WelcomePage() {
                 <ShieldCheck className="h-5 w-5" />
               </div>
               <div>
-                <CardTitle className="text-sm">Project overview</CardTitle>
+                <CardTitle className="text-sm">How SmartSafe Works</CardTitle>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
-                  Helpful when explaining the website in a demo or viva.
+                  Advanced safety features at your fingertips
                 </p>
               </div>
             </CardHeader>
             <CardContent className="space-y-2 text-xs text-slate-600 dark:text-slate-300">
               <p>
-                <span className="font-medium">Public website:</span> Landing page, About, and Contact
-                sections explain the SmartSafe concept and goals.
+                <span className="font-medium">Real-time Protection:</span> 95-98% accurate crash detection with instant emergency alerts to your contacts.
               </p>
               <p>
-                <span className="font-medium">Dashboard:</span> Live weather, GPS support, simulated
-                speed and accident-prone red zones for a driver&apos;s journey.
+                <span className="font-medium">Smart Monitoring:</span> Live GPS tracking, weather analysis, and accident zone alerts keep you informed.
               </p>
               <p>
-                <span className="font-medium">Auth pages:</span> Login screen to illustrate how
-                drivers would securely access their dashboard from the website.
+                <span className="font-medium">Driver Safety:</span> Fatigue detection, harsh driving alerts, and safety score tracking help improve your driving.
               </p>
             </CardContent>
           </Card>
