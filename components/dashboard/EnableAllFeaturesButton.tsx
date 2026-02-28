@@ -114,60 +114,88 @@ function EnableAllFeaturesButtonInner({
   const allEnabled = status.gps && status.motion && status.notification
 
   return (
-    <Card className="border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950/30 mb-6">
+    <Card className="border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950/30">
       <CardContent className="pt-6">
-        <div className="flex items-start gap-4">
-          <div className="rounded-full bg-emerald-100 dark:bg-emerald-900/50 p-3">
-            <ShieldCheck className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
+        <div className="space-y-6">
+          {/* Header */}
+          <div className="flex items-start gap-4">
+            <div className="rounded-full bg-emerald-100 dark:bg-emerald-900/50 p-3">
+              <ShieldCheck className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
+                Enable Safety Features
+              </h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400">
+                Grant permissions to unlock real-time protection and emergency response.
+              </p>
+            </div>
           </div>
-          <div className="flex-1">
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
-              Enable All Safety Features
-            </h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
-              Grant permissions for GPS tracking, crash detection sensors, and emergency alerts to unlock full protection.
-            </p>
 
-            {isEnabling && (
-              <div className="space-y-2 mb-4">
-                <PermissionStatus label="GPS Location" granted={status.gps} />
-                <PermissionStatus label="Motion Sensors" granted={status.motion} />
-                <PermissionStatus label="Notifications" granted={status.notification} />
-              </div>
-            )}
-
-            {allEnabled ? (
-              <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-medium">
-                <CheckCircle2 className="h-5 w-5" />
-                <span>All features enabled! You're fully protected.</span>
-              </div>
-            ) : (
-              <Button
-                onClick={enableAllFeatures}
-                disabled={isEnabling}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white"
-              >
-                {isEnabling ? "Enabling..." : "Enable All Features"}
-              </Button>
-            )}
+          {/* Permissions List */}
+          <div className="space-y-4">
+            <PermissionCard
+              icon="📍"
+              title="GPS Location"
+              description="Track your route and detect accident-prone zones in real-time"
+              granted={status.gps}
+            />
+            <PermissionCard
+              icon="📱"
+              title="Motion Sensors"
+              description="Detect sudden impacts and crashes using your device's accelerometer"
+              granted={status.motion}
+            />
+            <PermissionCard
+              icon="🔔"
+              title="Notifications"
+              description="Receive instant alerts for safety warnings and emergency situations"
+              granted={status.notification}
+            />
           </div>
+
+          {/* Action Buttons */}
+          {allEnabled ? (
+            <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-medium p-4 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
+              <CheckCircle2 className="h-5 w-5" />
+              <span>All features enabled! You're fully protected.</span>
+            </div>
+          ) : (
+            <Button
+              onClick={enableAllFeatures}
+              disabled={isEnabling}
+              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-6 text-base"
+            >
+              {isEnabling ? "Requesting Permissions..." : "Enable All Features"}
+            </Button>
+          )}
         </div>
       </CardContent>
     </Card>
   )
 }
 
-function PermissionStatus({ label, granted }: { label: string; granted: boolean }) {
+function PermissionCard({ 
+  icon, 
+  title, 
+  description, 
+  granted 
+}: { 
+  icon: string
+  title: string
+  description: string
+  granted: boolean
+}) {
   return (
-    <div className="flex items-center gap-2 text-sm">
-      {granted ? (
-        <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-      ) : (
-        <AlertCircle className="h-4 w-4 text-slate-400" />
-      )}
-      <span className={granted ? "text-emerald-600 dark:text-emerald-400" : "text-slate-500"}>
-        {label}
-      </span>
+    <div className="flex items-start gap-3 p-3 rounded-lg bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+      <div className="text-2xl">{icon}</div>
+      <div className="flex-1">
+        <div className="flex items-center gap-2 mb-1">
+          <h4 className="font-medium text-slate-900 dark:text-white text-sm">{title}</h4>
+          {granted && <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />}
+        </div>
+        <p className="text-xs text-slate-600 dark:text-slate-400">{description}</p>
+      </div>
     </div>
   )
 }
