@@ -84,6 +84,30 @@ const MOCK_WEATHER: WeatherSnapshot = {
 
 export default function DashboardPage() {
   const router = useRouter()
+  
+  // Check if permissions are granted, if not redirect to welcome page
+  React.useEffect(() => {
+    if (typeof window === "undefined") return
+    
+    const checkPermissions = async () => {
+      try {
+        // Check if user has granted location permission
+        const permissionStatus = await navigator.permissions.query({ name: 'geolocation' as PermissionName })
+        
+        if (permissionStatus.state === 'denied' || permissionStatus.state === 'prompt') {
+          // Redirect to welcome page to grant permissions
+          router.replace("/welcome")
+          return
+        }
+      } catch (error) {
+        // If permissions API not supported, continue to dashboard
+        console.log("Permissions API not supported")
+      }
+    }
+    
+    checkPermissions()
+  }, [router])
+  
   const [metrics, setMetrics] = React.useState<TripMetrics>({
     speed: 0,
     distance: 0,
