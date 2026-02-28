@@ -9,11 +9,13 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { EnableAllFeaturesButton } from "@/components/dashboard/EnableAllFeaturesButton"
 
 export default function LoginPage() {
   const router = useRouter()
   const [submitting, setSubmitting] = React.useState(false)
   const [message, setMessage] = React.useState<string | null>(null)
+  const [loggedIn, setLoggedIn] = React.useState(false)
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -48,7 +50,7 @@ export default function LoginPage() {
         } catch {
           // ignore storage errors
         }
-        router.push("/dashboard")
+        setLoggedIn(true) // Show permissions screen instead of redirecting
       })
       .catch((err: unknown) => {
         // Fallback: If API fails, still allow login with localStorage
@@ -61,7 +63,7 @@ export default function LoginPage() {
           }
           // Trigger custom event to update Header
           window.dispatchEvent(new Event("smartsafe-auth-change"))
-          router.push("/dashboard")
+          setLoggedIn(true) // Show permissions screen instead of redirecting
         } catch {
           const msg = err instanceof Error ? err.message : "Login failed"
           setMessage(msg)
@@ -75,6 +77,34 @@ export default function LoginPage() {
   return (
     <div className="bg-slate-50 py-16 dark:bg-slate-950">
       <div className="container mx-auto flex max-w-md flex-col gap-8 px-4">
+        {loggedIn ? (
+          // Show permissions screen after login
+          <>
+            <div className="space-y-3 text-center">
+              <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-500">
+                <ShieldAlert className="h-5 w-5" />
+              </div>
+              <h1 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-white">
+                Enable Safety Features
+              </h1>
+              <p className="text-sm text-slate-600 dark:text-slate-300">
+                Grant permissions to unlock full protection and real-time safety monitoring.
+              </p>
+            </div>
+            
+            <EnableAllFeaturesButton onAllEnabled={() => router.push("/dashboard")} />
+            
+            <Button 
+              variant="outline" 
+              onClick={() => router.push("/dashboard")}
+              className="w-full"
+            >
+              Skip for now
+            </Button>
+          </>
+        ) : (
+          // Show login form
+          <>
         <div className="space-y-3 text-center">
           <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-500">
             <ShieldAlert className="h-5 w-5" />
@@ -141,6 +171,8 @@ export default function LoginPage() {
             </div>
           </CardContent>
         </Card>
+        </>
+        )}
       </div>
     </div>
   )
